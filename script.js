@@ -21,15 +21,20 @@ const VEHICLES = [
     },
     {
         name: "Wagon R",
-        pricePerDay: 60,
-        pricePerExtraKm: 0.25,
+        pricePerDay: 4500,
+        pricePerExtraKm: 25,
     },
     {
-        name: "Nissan Leaf",
-        pricePerDay: 130,
-        pricePerExtraKm: 0.2,
+        name: "Suzuki Spacia",
+        pricePerDay: 4500,
+        pricePerExtraKm: 25,
     },
 ];
+
+// ─────────────────────────────────────────
+// DEFAULT VEHICLE — index of the vehicle selected on page load (0 = first)
+// ─────────────────────────────────────────
+const DEFAULT_VEHICLE_IDX = -1;
 
 // ─────────────────────────────────────────
 // TRIP DEFAULTS — optional preset values for trip fields
@@ -38,44 +43,61 @@ const VEHICLES = [
 // ─────────────────────────────────────────
 const TRIP_DEFAULTS = {
     freeKmPerDay: 100,
-    numDays: null,
-    fuelPrice: null,
+    numDays: 1,
+    fuelPrice: 414,
 };
 // ─────────────────────────────────────────
 
-let activeIdx = null;
+// activeIdx === -1 means "default vehicle is active"
+// activeIdx === null means "no vehicle / user has diverged"
+let activeIdx = -1;
 
 function renderChips() {
     const wrap = document.getElementById("vehicleChips");
-    wrap.innerHTML = VEHICLES.map(
+    // Index -1 = default chip, 0+ = specific vehicles
+    const defaultChip = `<div class="chip ${activeIdx === -1 ? "active" : ""}" onclick="selectVehicle(-1)">Custom</div>`;
+    const vehicleChips = VEHICLES.map(
         (v, i) =>
             `<div class="chip ${activeIdx === i ? "active" : ""}" onclick="selectVehicle(${i})">${v.name}</div>`,
     ).join("");
+    wrap.innerHTML = defaultChip + vehicleChips;
 }
 
 function selectVehicle(idx) {
-    const v = VEHICLES[idx];
-    if (!v) return;
     activeIdx = idx;
     renderChips();
 
-    // Auto-fill vehicle fields
-    setVal("pricePerDay", v.pricePerDay);
-    setVal("pricePerExtraKm", v.pricePerExtraKm);
+    if (idx === -1) {
+        // Default — clear vehicle-specific fields
+        setVal("pricePerDay", "");
+        setVal("pricePerExtraKm", "");
+    } else {
+        const v = VEHICLES[idx];
+        if (!v) return;
+        setVal("pricePerDay", v.pricePerDay);
+        setVal("pricePerExtraKm", v.pricePerExtraKm);
+    }
 
-    // Auto-fill trip defaults — only if value is not null
+    // Apply trip defaults — only if value is not null
     if (TRIP_DEFAULTS.freeKmPerDay !== null) setVal("freeKmPerDay", TRIP_DEFAULTS.freeKmPerDay);
     if (TRIP_DEFAULTS.numDays !== null) setVal("numDays", TRIP_DEFAULTS.numDays);
     if (TRIP_DEFAULTS.fuelPrice !== null) setVal("fuelPrice", TRIP_DEFAULTS.fuelPrice);
 
     const tag = document.getElementById("activeVehicleTag");
-    tag.textContent = "🚗 " + v.name;
-    tag.classList.add("show");
+    if (idx === -1) {
+        tag.classList.remove("show");
+    } else {
+        tag.textContent = "🚗 " + VEHICLES[idx].name;
+        tag.classList.add("show");
+    }
 
     calculate();
 
-    // Focus Total Distance Driven after a short delay so the chip click settles
-    setTimeout(() => document.getElementById("numKm").focus(), 80);
+    // Focus Total Distance Driven only if it's empty
+    const numKmEl = document.getElementById("numKm");
+    if (!numKmEl.value) {
+        setTimeout(() => numKmEl.focus(), 80);
+    }
 }
 
 function setVal(id, val) {
@@ -96,10 +118,15 @@ const calcIds = [
     "fuelConsumption",
     "fuelPrice",
 ];
+
+// Fields that belong to the vehicle — editing them falls back to Default
+const VEHICLE_FIELDS = ["pricePerDay", "pricePerExtraKm"];
+
 calcIds.forEach((id) =>
     document.getElementById(id).addEventListener("input", () => {
-        if (["pricePerDay", "pricePerExtraKm"].includes(id)) {
-            activeIdx = null;
+        if (VEHICLE_FIELDS.includes(id) && activeIdx !== -1) {
+            // User manually edited a vehicle field — revert chip to Default
+            activeIdx = -1;
             document.getElementById("activeVehicleTag").classList.remove("show");
             renderChips();
         }
@@ -209,4 +236,5 @@ function calculate() {
     stickyEl.classList.add("visible");
 }
 
-renderChips();
+// ── Init: select default vehicle on load ──
+selectVehicle(DEFAULT_VEHICLE_IDX);
