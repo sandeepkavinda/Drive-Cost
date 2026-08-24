@@ -1,0 +1,407 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --bg: #111116;
+    --surface: #1c1c24;
+    --border: #2e2e3a;
+    --gold: #c9a96e;
+    --gold-dim: #8a6f44;
+    --text: #f0efe9;
+    --text-muted: #7a7a8a;
+    --text-dim: #4a4a5a;
+    --green: #6bcfa0;
+    --radius: 14px;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Inter", sans-serif;
+    min-height: 100vh;
+    padding: 40px 20px 80px;
+}
+
+/* mobile: extra bottom padding so sticky bar doesn't cover content */
+@media (max-width: 680px) {
+    body {
+        padding-bottom: 100px;
+    }
+}
+
+header {
+    text-align: center;
+    margin-bottom: 48px;
+}
+
+.eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 12px;
+}
+
+h1 {
+    font-family: "Playfair Display", serif;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 400;
+    color: var(--text);
+    line-height: 1.15;
+}
+
+h1 em {
+    font-style: italic;
+    color: var(--gold);
+}
+
+.subtitle {
+    margin-top: 10px;
+    font-size: 14px;
+    color: var(--text-muted);
+    font-weight: 300;
+    letter-spacing: 0.01em;
+}
+
+/* ── Vehicle picker ── */
+.vehicle-section {
+    max-width: 880px;
+    margin: 0 auto 20px;
+}
+
+.vehicle-chips {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.chip {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 7px 14px;
+    cursor: pointer;
+    font-size: 13px;
+    color: var(--text-muted);
+    font-weight: 400;
+    transition: all 0.15s;
+    white-space: nowrap;
+}
+
+.chip:hover {
+    border-color: var(--gold-dim);
+    color: var(--text);
+}
+
+.chip.active {
+    border-color: var(--gold);
+    color: var(--gold);
+    background: rgba(201, 169, 110, 0.07);
+}
+
+/* ── Layout ── */
+.layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    max-width: 880px;
+    margin: 0 auto;
+    align-items: start;
+}
+
+@media (max-width: 680px) {
+    .layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+.card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px;
+}
+
+.section-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 18px;
+}
+
+.field {
+    margin-bottom: 18px;
+}
+
+.field:last-child {
+    margin-bottom: 0;
+}
+
+label {
+    display: block;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-muted);
+    margin-bottom: 7px;
+    letter-spacing: 0.02em;
+}
+
+.input-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-unit {
+    position: absolute;
+    right: 14px;
+    font-size: 12px;
+    color: var(--text-dim);
+    pointer-events: none;
+    font-weight: 500;
+}
+
+input[type="number"] {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 11px 44px 11px 14px;
+    color: var(--text);
+    font-family: "Inter", sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    outline: none;
+    transition:
+        border-color 0.18s,
+        box-shadow 0.18s;
+    -moz-appearance: textfield;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+input[type="number"]:focus {
+    border-color: var(--gold-dim);
+    box-shadow: 0 0 0 3px rgba(201, 169, 110, 0.08);
+}
+
+.divider {
+    height: 1px;
+    background: var(--border);
+    margin: 22px 0;
+}
+
+/* ── Summary (desktop sticky) ── */
+.summary-card {
+    position: sticky;
+    top: 24px;
+}
+
+.active-vehicle-tag {
+    font-size: 11px;
+    color: var(--gold);
+    font-weight: 500;
+    margin-bottom: 14px;
+    display: none;
+}
+
+.active-vehicle-tag.show {
+    display: block;
+}
+
+.line-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 11px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.line-item:last-of-type {
+    border-bottom: none;
+}
+
+.line-label {
+    font-size: 13px;
+    color: var(--text-muted);
+    font-weight: 400;
+}
+
+.line-value {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    font-variant-numeric: tabular-nums;
+    transition: color 0.2s;
+}
+
+.line-value.highlight {
+    color: var(--gold);
+}
+
+.line-item.extra .line-label {
+    color: var(--text-dim);
+    font-size: 12px;
+}
+
+.line-item.extra .line-value {
+    color: var(--text-muted);
+    font-size: 12px;
+}
+
+/* total block inside the summary card */
+.total-block {
+    margin-top: 20px;
+    padding: 18px;
+    background: var(--bg);
+    border-radius: 10px;
+    border: 1px solid var(--gold-dim);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.total-label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+.total-value {
+    font-family: "Playfair Display", serif;
+    font-size: 1.9rem;
+    color: var(--gold);
+    font-variant-numeric: tabular-nums;
+    transition: all 0.25s;
+}
+
+.per-day {
+    margin-top: 12px;
+    text-align: right;
+    font-size: 12px;
+    color: var(--text-dim);
+}
+
+.per-day span {
+    color: var(--text-muted);
+}
+
+.zero-state {
+    text-align: center;
+    padding: 30px 0;
+    color: var(--text-dim);
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.badge {
+    display: inline-block;
+    background: rgba(107, 207, 160, 0.1);
+    color: var(--green);
+    border: 1px solid rgba(107, 207, 160, 0.2);
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 8px;
+    margin-left: 6px;
+    vertical-align: middle;
+}
+
+.badge.warn {
+    background: rgba(201, 169, 110, 0.1);
+    color: var(--gold);
+    border-color: rgba(201, 169, 110, 0.2);
+}
+
+/* ── Mobile sticky total bar ── */
+.sticky-total {
+    display: none;
+    /* hidden on desktop */
+}
+
+@media (max-width: 680px) {
+    .sticky-total {
+        display: flex;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 50;
+        background: #18181f;
+        border-top: 1px solid var(--gold-dim);
+        padding: 14px 20px;
+        align-items: center;
+        justify-content: space-between;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        transition:
+            opacity 0.25s,
+            transform 0.25s;
+        opacity: 0;
+        transform: translateY(100%);
+    }
+
+    .sticky-total.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .sticky-total-label {
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+    }
+
+    .sticky-total-sub {
+        font-size: 11px;
+        color: var(--text-dim);
+        margin-top: 2px;
+    }
+
+    .sticky-total-amount {
+        font-family: "Playfair Display", serif;
+        font-size: 1.6rem;
+        color: var(--gold);
+        font-variant-numeric: tabular-nums;
+    }
+
+    /* on mobile, hide the total-block inside summary card to avoid duplication */
+    .total-block {
+        display: none;
+    }
+
+    .per-day {
+        display: none;
+    }
+}
+
+.pulse {
+    animation: pulse 0.3s ease;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 0.5;
+        transform: scale(0.97);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
