@@ -25,9 +25,38 @@ const VEHICLES = [
         pricePerExtraKm: 25,
     },
     {
+        name: "Suzuki Every",
+        pricePerDay: 5000,
+        pricePerExtraKm: 25,
+    },
+    {
         name: "Suzuki Spacia",
         pricePerDay: 4500,
         pricePerExtraKm: 25,
+    },
+    {
+        name: "Toyota Aqua - 22KM/L",
+        pricePerDay: 6000,
+        pricePerExtraKm: 30,
+        fuelConsumption: 22
+    },
+    {
+        name: "Honda Fit GP5 - 19KM/L",
+        pricePerDay: 6000,
+        pricePerExtraKm: 30,
+        fuelConsumption: 19
+    },
+    {
+        name: "Toyota Prius 3rd Gen - 21KM/L",
+        pricePerDay: 7000,
+        pricePerExtraKm: 30,
+        fuelConsumption: 21
+    },
+    {
+        name: "Wagon R - 19KM/L",
+        pricePerDay: 4500,
+        pricePerExtraKm: 25,
+        fuelConsumption: 19
     },
 ];
 
@@ -76,11 +105,11 @@ function selectVehicle(idx) {
         if (!v) return;
         setVal("pricePerDay", v.pricePerDay);
         setVal("pricePerExtraKm", v.pricePerExtraKm);
+        setVal("fuelConsumption", v.fuelConsumption);
     }
 
     // Apply trip defaults — only if value is not null
     if (TRIP_DEFAULTS.freeKmPerDay !== null) setVal("freeKmPerDay", TRIP_DEFAULTS.freeKmPerDay);
-    if (TRIP_DEFAULTS.numDays !== null) setVal("numDays", TRIP_DEFAULTS.numDays);
     if (TRIP_DEFAULTS.fuelPrice !== null) setVal("fuelPrice", TRIP_DEFAULTS.fuelPrice);
 
     const tag = document.getElementById("activeVehicleTag");
