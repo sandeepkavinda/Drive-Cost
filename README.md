@@ -1,8 +1,8 @@
-# Drive Cost
+# 🚗 Drive Cost
 
 Drive Cost is a web-based car rental cost calculator that helps users estimate the total cost of renting a vehicle before making a booking. By entering rental details, trip distance, and fuel information, users can calculate estimated rental charges, additional kilometer fees, and fuel expenses.
 
-**Live Website:** https://drivecosts.netlify.app/
+🌐 **Live Website:** https://drivecosts.netlify.app/
 
 ## Purpose
 
